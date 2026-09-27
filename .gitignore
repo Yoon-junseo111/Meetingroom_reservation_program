@@ -1,0 +1,8 @@
+# Local JDK
+oracleJdk-27/
+
+# Java compiled output
+out/
+
+# Compiled Java files
+*.class
