@@ -121,10 +121,25 @@ public class Main {
 
                 case 3:
 
-                    // 현재는 예약 조회 기능을 아직 구현하지 않았으므로
-                    // 선택되었다는 메시지만 출력
-                    System.out.println("예약 조회를 선택했습니다.");
+                    // 예약 조회 기능의 제목 출력
+                    System.out.println("=== 예약 목록 ===");
 
+                    // 등록된 예약이 하나도 없는 경우
+                    if (reservationCount == 0) {
+                        System.out.println("등록된 예약이 없습니다.");
+                        break;
+                    }
+
+                    // 예약 배열에 저장된 예약 정보를 처음부터 하나씩 조회
+                    // reservationCount는 현재 등록된 예약의 개수를 의미
+                    for (int i = 0; i < reservationCount; i++) {
+
+                        // Reservation 객체의 showInfo() 메서드를 호출하여
+                        // 예약 번호, 예약자, 회의실, 날짜를 화면에 출력
+                        reservations[i].showInfo();
+                    }
+
+                    // 예약 조회 기능 종료
                     break;
 
 
