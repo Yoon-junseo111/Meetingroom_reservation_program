@@ -28,4 +28,9 @@ public class Reservation {
             + " / 날짜: " + date
         );
     }
+
+    // 예약 번호를 반환하는 메서드
+    public int getId() {
+        return id;
+    }
 }
