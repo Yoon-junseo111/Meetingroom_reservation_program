@@ -33,4 +33,15 @@ public class Reservation {
     public int getId() {
         return id;
     }
-}
+
+
+    // 회의실 번호를 반환하는 메서드
+    public int getRoomId() {
+        return roomId;
+    }
+
+    // 예약 날짜를 반환하는 메서드
+    public String getDate() {
+        return date;
+    }
+    }

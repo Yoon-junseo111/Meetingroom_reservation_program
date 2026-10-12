@@ -142,6 +142,30 @@ public class Main {
                             );
                         }
                     }
+                    // 같은 회의실과 날짜에 예약이 있는지 확인
+                    boolean duplicateReservation = false;
+
+                    // 기존 예약 목록을 하나씩 확인
+                    for (int i = 0; i < reservationCount; i++) {
+
+                        // 회의실 번호와 예약 날짜가 모두 같은지 확인
+                        if (reservations[i].getRoomId() == roomId
+                                && reservations[i].getDate().equals(date)) {
+
+                            // 중복 예약이 존재한다고 표시
+                            duplicateReservation = true;
+
+                            // 중복 예약을 찾았으므로 반복 종료
+                            break;
+                        }
+                    }
+
+                    // 중복 예약이 존재하는 경우
+                    if (duplicateReservation) {
+                        System.out.println("해당 회의실은 같은 날짜에 이미 예약되어 있습니다.");
+                        break;
+                    }
+
                     // 입력받은 예약 정보를 이용하여
                     // 하나의 Reservation 객체를 생성
                     //
