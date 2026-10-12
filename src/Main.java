@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Main {
@@ -76,16 +78,70 @@ public class Main {
                     System.out.print("예약자 이름: ");
                     String userName = scanner.next();
 
+                  
                     // 사용자에게 예약할 회의실 번호를 입력받음
-                    // 입력한 회의실 번호는 roomId 변수에 저장
-                    System.out.print("회의실 번호: ");
-                    int roomId = scanner.nextInt();
+                    int roomId;
+
+                    // 입력한 번호가 실제로 등록된 회의실인지 확인하기 위한 변수
+                    boolean roomExists;
+
+                    // 올바른 회의실 번호를 입력할 때까지 반복
+                    while (true) {
+
+                        System.out.print("회의실 번호: ");
+                        roomId = scanner.nextInt();
+
+                        // 처음에는 회의실이 존재하지 않는다고 설정
+                        roomExists = false;
+
+                        // 등록된 회의실 목록을 하나씩 확인
+                        for (Room room : rooms) {
+
+                            // 입력한 번호와 회의실 번호가 일치하는지 확인
+                            // Room 클래스에 getId() 메서드가 있어야 사용할 수 있음
+                            if (room.getId() == roomId) {
+                                roomExists = true;
+                                break;
+                            }
+                        }
+
+                        // 회의실이 존재하면 입력 반복 종료
+                        if (roomExists) {
+                            break;
+                        }
+
+                        // 등록되지 않은 회의실 번호라면 안내 메시지 출력
+                        System.out.println("존재하지 않는 회의실 번호입니다. 다시 입력해주세요.");
+                    }
+
 
                     // 사용자에게 예약 날짜를 입력받음
-                    // 입력한 날짜는 date 변수에 저장
-                    System.out.print("예약 날짜: ");
-                    String date = scanner.next();
+                    // 실제로 존재하는 날짜인지 확인
+                    String date;
 
+                    while (true) {
+
+                        // 날짜 입력 요청
+                        System.out.print("예약 날짜 (예: 2026-10-12): ");
+                        date = scanner.next();
+
+                        try {
+
+                            // 입력한 문자열을 날짜 형식으로 변환
+                            // 형식이 잘못되었거나 존재하지 않는 날짜라면 오류 발생
+                            LocalDate.parse(date);
+
+                            // 날짜 변환에 성공하면 반복문 종료
+                            break;
+
+                        } catch (DateTimeParseException e) {
+
+                            // 날짜 형식이 잘못되었거나 유효하지 않은 경우
+                            System.out.println(
+                                "잘못된 날짜입니다. YYYY-MM-DD 형식으로 다시 입력해주세요."
+                            );
+                        }
+                    }
                     // 입력받은 예약 정보를 이용하여
                     // 하나의 Reservation 객체를 생성
                     //

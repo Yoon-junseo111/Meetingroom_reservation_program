@@ -18,8 +18,14 @@ public class Room {
 
     // 회의실 정보 출력
     public void showInfo() {
+
         System.out.println(
             id + ". " + name + " (수용 인원: " + capacity + "명)"
         );
+    }
+
+    // 회의실 번호를 반환하는 메서드
+    public int getId() {
+        return id;
     }
 }
