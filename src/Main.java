@@ -19,8 +19,8 @@ public class Main {
         };
 
         // 예약 정보를 저장하기 위한 Reservation 배열 생성
-        // 최대 10개의 예약을 저장할 수 있도록 구성
-        Reservation[] reservations = new Reservation[10];
+        // 최대 5개의 예약을 저장할 수 있도록 구성
+        Reservation[] reservations = new Reservation[6];
 
         // 현재 등록된 예약의 개수를 저장하는 변수
         // 처음에는 예약이 없으므로 0으로 시작
@@ -72,6 +72,15 @@ public class Main {
 
                     // 예약 등록 기능의 제목 출력
                     System.out.println("=== 예약 등록 ===");
+
+                    // 예약 배열이 가득 찼는지 확인
+                        if (reservationCount >= reservations.length) {
+                            System.out.println();
+                            System.out.println("예약 가능 개수를 초과했습니다.");
+                            System.out.println("최대 예약 개수는 6개입니다.");
+                            System.out.println();
+                            break;
+                        }
 
                     // 사용자에게 예약자 이름을 입력받음
                     // 입력한 이름은 userName 변수에 저장
