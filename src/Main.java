@@ -288,6 +288,7 @@ public class Main {
                     break;
 
 
+                
                 case 4:
 
                     // 예약 취소 기능의 제목 출력
@@ -299,51 +300,67 @@ public class Main {
                         break;
                     }
 
-                    // 사용자에게 취소할 예약 번호 입력 요청
+                    // 취소할 예약 번호 입력
                     System.out.print("취소할 예약 번호: ");
                     int cancelId = scanner.nextInt();
 
-                    // 취소할 예약의 배열 위치를 저장하는 변수
+                    // 취소할 예약의 배열 위치
                     // -1은 아직 예약을 찾지 못했다는 의미
                     int cancelIndex = -1;
 
-                    // 등록된 예약을 처음부터 하나씩 확인
+                    // 입력한 예약 번호와 일치하는 예약 검색
                     for (int i = 0; i < reservationCount; i++) {
 
-                        // 입력한 예약 번호와
-                        // 현재 예약의 예약 번호가 같은지 확인
                         if (reservations[i].getId() == cancelId) {
-
-                            // 일치하는 예약의 배열 위치 저장
                             cancelIndex = i;
-
-                            // 예약을 찾았으므로 반복문 종료
                             break;
                         }
                     }
 
-                    // 입력한 예약 번호에 해당하는 예약을 찾지 못한 경우
+                    // 예약 번호가 존재하지 않는 경우
                     if (cancelIndex == -1) {
                         System.out.println("해당 예약을 찾을 수 없습니다.");
                         break;
                     }
 
-                    // 취소한 예약 뒤에 있는 예약들을
-                    // 한 칸씩 앞으로 이동
-                    for (int i = cancelIndex; i < reservationCount - 1; i++) {
-                        reservations[i] = reservations[i + 1];
+                    // 취소할 예약의 상세 정보 출력
+                    System.out.println();
+                    System.out.println("취소할 예약 정보:");
+                    reservations[cancelIndex].showInfo();
+
+                    // 실제 취소 여부 확인
+                    System.out.print("이 예약을 취소하시겠습니까? (Y/N): ");
+                    String confirm = scanner.next();
+
+                    // Y를 입력한 경우에만 예약 취소 진행
+                    if (confirm.equalsIgnoreCase("Y")) {
+
+                        // 취소한 예약 뒤의 예약을 한 칸씩 앞으로 이동
+                        for (int i = cancelIndex; i < reservationCount - 1; i++) {
+                            reservations[i] = reservations[i + 1];
+                        }
+
+                        // 마지막 배열 위치 비우기
+                        reservations[reservationCount - 1] = null;
+
+                        // 예약 개수 감소
+                        reservationCount--;
+
+                        System.out.println("예약이 취소되었습니다.");
+
+                    } else if (confirm.equalsIgnoreCase("N")) {
+
+                        // N을 입력하면 예약을 그대로 유지
+                        System.out.println("예약 취소가 취소되었습니다.");
+
+                    } else {
+
+                        // Y 또는 N 이외의 입력
+                        System.out.println("잘못된 입력입니다. 예약을 취소하지 않았습니다.");
                     }
 
-                    // 마지막에 남은 배열 위치를 비움
-                    reservations[reservationCount - 1] = null;
-
-                    // 예약 개수를 1 감소
-                    reservationCount--;
-
-                    // 예약 취소 완료 메시지 출력
-                    System.out.println("예약이 취소되었습니다.");
-
                     break;
+
 
                 case 5:
 
