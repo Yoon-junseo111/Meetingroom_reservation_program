@@ -151,56 +151,112 @@ public class Main {
                             );
                         }
                     }
-                    // 같은 회의실과 날짜에 예약이 있는지 확인
-                    boolean duplicateReservation = false;
+                    
+                    // 예약 시작 시간 입력
+                    String startTime;
 
-                    // 기존 예약 목록을 하나씩 확인
-                    for (int i = 0; i < reservationCount; i++) {
+                    while (true) {
+                        System.out.print("예약 시작 시간 (예: 09:00): ");
+                        startTime = scanner.next();
 
-                        // 회의실 번호와 예약 날짜가 모두 같은지 확인
-                        if (reservations[i].getRoomId() == roomId
-                                && reservations[i].getDate().equals(date)) {
-
-                            // 중복 예약이 존재한다고 표시
-                            duplicateReservation = true;
-
-                            // 중복 예약을 찾았으므로 반복 종료
+                        try {
+                            java.time.LocalTime.parse(startTime);
                             break;
+                        } catch (java.time.format.DateTimeParseException e) {
+                            System.out.println(
+                                "잘못된 시간입니다. HH:mm 형식으로 입력해주세요."
+                            );
                         }
                     }
 
-                    // 중복 예약이 존재하는 경우
+                    // 예약 종료 시간 입력
+                    String endTime;
+
+                    while (true) {
+                        System.out.print("예약 종료 시간 (예: 10:00): ");
+                        endTime = scanner.next();
+
+                        try {
+                            java.time.LocalTime.parse(endTime);
+
+                            // 종료 시간이 시작 시간보다 늦은지 확인
+                            if (java.time.LocalTime.parse(endTime)
+                                    .isAfter(java.time.LocalTime.parse(startTime))) {
+                                break;
+                            }
+
+                            System.out.println(
+                                "종료 시간은 시작 시간보다 늦어야 합니다."
+                            );
+
+                        } catch (java.time.format.DateTimeParseException e) {
+                            System.out.println(
+                                "잘못된 시간입니다. HH:mm 형식으로 입력해주세요."
+                            );
+                        }
+                    }
+
+                    // 같은 회의실, 같은 날짜에 시간이 겹치는 예약이 있는지 확인
+                    boolean duplicateReservation = false;
+
+                    for (int i = 0; i < reservationCount; i++) {
+
+                        // 회의실 번호와 날짜가 같은 예약만 확인
+                        if (reservations[i].getRoomId() == roomId
+                                && reservations[i].getDate().equals(date)) {
+
+                            // 기존 예약의 시작 시간과 종료 시간
+                            java.time.LocalTime existingStart =
+                                java.time.LocalTime.parse(
+                                    reservations[i].getStartTime()
+                                );
+
+                            java.time.LocalTime existingEnd =
+                                java.time.LocalTime.parse(
+                                    reservations[i].getEndTime()
+                                );
+
+                            // 예약 시간이 겹치는지 확인
+                            java.time.LocalTime newStart =
+                                java.time.LocalTime.parse(startTime);
+
+                            java.time.LocalTime newEnd =
+                                java.time.LocalTime.parse(endTime);
+
+                            if (newStart.isBefore(existingEnd)
+                                    && newEnd.isAfter(existingStart)) {
+
+                                duplicateReservation = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // 예약 시간이 겹치면 등록하지 않음
                     if (duplicateReservation) {
-                        System.out.println("해당 회의실은 같은 날짜에 이미 예약되어 있습니다.");
+                        System.out.println(
+                            "해당 시간에는 이미 예약이 있습니다."
+                        );
                         break;
                     }
 
-                    // 입력받은 예약 정보를 이용하여
-                    // 하나의 Reservation 객체를 생성
-                    //
-                    // reservationCount + 1을 이용하여
-                    // 예약 번호를 자동으로 부여
+                    // 예약 객체 생성
                     Reservation reservation = new Reservation(
                         reservationCount + 1,
                         userName,
                         roomId,
-                        date
+                        date,
+                        startTime,
+                        endTime
                     );
 
-                    // 생성한 Reservation 객체를
-                    // reservations 배열에 저장
-                    //
-                    // reservationCount는 현재 비어 있는
-                    // 배열의 위치를 나타냄
+                    // 예약 배열에 저장
                     reservations[reservationCount] = reservation;
 
-                    // 새로운 예약이 하나 추가되었으므로
-                    // 예약 개수를 1 증가시킴
-                    //
-                    // 다음 예약은 그 다음 배열 위치에 저장됨
+                    // 예약 개수 증가
                     reservationCount++;
 
-                    // 예약 등록이 완료되었다는 메시지 출력
+                    // 예약 등록 완료 메시지
                     System.out.println();
                     System.out.println("예약이 등록되었습니다.");
 
